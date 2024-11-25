@@ -20,10 +20,10 @@ def game_start(screen):
     quit_text = button_font.render("Quit", 0, BUTTON_TEXT)
 
     #Init START/QUIT Button Text Box Background
-    start_surface = pygame.Surface((start_text.get_size()[0] * 20, start_text.get_size()[1] * 20))
+    start_surface = pygame.Surface((start_text.get_size()[0] + 20, start_text.get_size()[1] + 20))
     start_surface.fill(BUTTON_COLOR)
     start_surface.blit(start_text, (10, 10))
-    quit_surface = pygame.Surface((quit_text.get_size()[0] * 20, quit_text.get_size()[1] * 20))
+    quit_surface = pygame.Surface((quit_text.get_size()[0] + 20, quit_text.get_size()[1] + 20))
     quit_surface.fill(BUTTON_COLOR)
     quit_surface.blit(quit_text, (10, 10))
 
@@ -52,3 +52,11 @@ def main ():
     game_over  = False
 
     pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Prog 1 Sudoku")
+
+    game_start(screen)
+
+
+if __name__ == "__main__":
+    main()

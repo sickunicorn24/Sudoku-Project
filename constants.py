@@ -1,7 +1,7 @@
 #All of these values are subject to change
 
-WIDTH = 540
-HEIGHT = 600
+WIDTH = 850
+HEIGHT = 1000
 BG_COLOR_1 = (255,255, 255) #White
 BG_COLOR_2 = (150, 10, 255) #Purple *IF NECCESSARY*
 TEXT = (0, 0, 0) #Black
