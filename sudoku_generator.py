@@ -19,7 +19,7 @@ class SudokuGenerator:
     def __init__(self, row_length, removed_cells):
         self.row_length = row_length
         self.removed_cells = removed_cells
-        self.board = [["-" for i in range(9)] for j in range(9)]
+        self.board = [["_" for i in range(row_length)] for j in range(row_length)]
         self.box_length = row_length ** 0.5
 
 
@@ -106,7 +106,19 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def is_valid(self, row, col, num):
-        pass
+        row_start = row//3
+        col_start = col//3
+
+        if self.valid_in_box(row_start, col_start, num):
+            if self.valid_in_row(row, num):
+                if self.valid_in_col(col, num):
+                    return True
+                else:
+                    return False
+            else:
+                return  False
+        else:
+            return False
 
     '''
     Fills the specified 3x3 box with values
@@ -119,8 +131,19 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_box(self, row_start, col_start):
-        pass
-    
+        nums_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+        row = random.randint(row_start, row_start+2)
+        col = random.randint(col_start, col_start+2)
+
+        for i in range(4):
+            num = random.choice(nums_list)
+
+            if self.board[row][col] == "_":
+                self.board[row][col] = num
+
+            nums_list.remove(num)
+
     '''
     Fills the three boxes along the main diagonal of the board
     These are the boxes which start at (0,0), (3,3), and (6,6)
