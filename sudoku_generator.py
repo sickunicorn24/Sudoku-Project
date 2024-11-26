@@ -138,7 +138,6 @@ class SudokuGenerator:
 
         for i in range(4):
             num = random.choice(nums_list)
-
             if self.board[row][col] == "_":
                 self.board[row][col] = num
 
