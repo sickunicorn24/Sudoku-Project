@@ -8,7 +8,6 @@ class SudokuGenerator:
 	self.removed_cells	- the total number of cells to be removed
 	self.board			- a 2D list of ints to represent the board
 	self.box_length		- the square root of row_length
-
 	Parameters:
     row_length is the number of rows/columns of the board (always 9 for this project)
     removed_cells is an integer value - the number of cells to be removed
