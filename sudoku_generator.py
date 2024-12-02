@@ -137,7 +137,7 @@ class SudokuGenerator:
         for row in range(row_start, row_start+3):
             for col in range(col_start, col_start+3):
                 for num in nums_list:
-                    if self.valid_in_box(row_start, col_start, num):
+                    if self.valid_in_box(row_start, col_start, num) and self.valid_in_col(col, num) and self.valid_in_row(row, num):
                         self.board[row][col] = num
                         nums_list.remove(num)
                         break
@@ -221,7 +221,8 @@ class SudokuGenerator:
     '''
 
     def remove_cells(self):
-        for i in range(self.removed_cells):
+        removed = 0
+        while removed < self.removed_cells:
             row = random.randint(0, self.row_length-1)
             col = random.randint(0, self.row_length-1)
 
@@ -229,6 +230,7 @@ class SudokuGenerator:
                 continue
 
             self.board[row][col] = 0
+            removed += 1
 
 '''
 DO NOT CHANGE
