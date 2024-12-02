@@ -1,4 +1,9 @@
+from idlelib.pyshell import restart_line
+from sys import displayhook
+
 import pygame, sys
+from pygame.display import update
+
 from constants import *
 from sudoku_generator import *
 
@@ -51,17 +56,71 @@ def game_start(screen):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if easy_rectangle.collidepoint(event.pos):
-                    return
+                    return EASY
                 elif medium_rectangle.collidepoint(event.pos):
-                    return
+                    return MEDIUM
                 elif hard_rectangle.collidepoint(event.pos):
-                    return
+                    return HARD
         pygame.display.update()
 
+def during_game(screen, difficulty):
+    #Init Fonts
+    bottom_button_font = pygame.font.Font(None, 50)
+    small_msg_font = pygame.font.Font(None, 30)
+
+    # BG color
+    screen.fill(BG_COLOR_2)
+    
+    #Init small message that displays the difficulty
+    small_msg_surface = small_msg_font.render(difficulty, 0, TEXT)
+    small_msg_rectangle = small_msg_surface.get_rect(center=(WIDTH // 2, HEIGHT - 50))
+    screen.blit(small_msg_surface, small_msg_rectangle)
+
+
+    #Text displays for the RESET/RESTART/EXIT buttons
+    reset_text = bottom_button_font.render("RESET", 0, TEXT)
+    restart_text = bottom_button_font.render("RESTART", 0, TEXT)
+    exit_text = bottom_button_font.render("EXIT", 0, TEXT)
+
+    #
+    reset_surface = pygame.Surface((reset_text.get_size()[0] + 20, reset_text.get_size()[1] + 20))
+    reset_surface.fill(BUTTON_COLOR)
+    reset_surface.blit(reset_text, (10, 10))
+    restart_surface = pygame.Surface((restart_text.get_size()[0] + 20, restart_text.get_size()[1] + 20))
+    restart_surface.fill(BUTTON_COLOR)
+    restart_surface.blit(restart_text, (10, 10))
+    exit_surface = pygame.Surface((exit_text.get_size()[0] + 20, exit_text.get_size()[1] + 20))
+    exit_surface.fill(BUTTON_COLOR)
+    exit_surface.blit(exit_text, (10, 10))
+
+    #
+    reset_rectangle = reset_surface.get_rect(center=(WIDTH // 2 + 200, HEIGHT - 150))
+    restart_rectangle = restart_surface.get_rect(center=(WIDTH // 2, HEIGHT - 150))
+    exit_rectangle = exit_surface.get_rect(center=(WIDTH // 2 - 200, HEIGHT - 150))
+
+    #
+    screen.blit(reset_surface, reset_rectangle)
+    screen.blit(restart_surface, restart_rectangle)
+    screen.blit(exit_surface, exit_rectangle)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if reset_rectangle.collidepoint(event.pos):
+                    return
+                elif restart_rectangle.collidepoint(event.pos):
+                    return
+                elif exit_rectangle.collidepoint(event.pos):
+                    sys.exit()
+        pygame.display.update()
+    
 
 
 def main ():
     game_over = False
+    dif = ""
 
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -69,6 +128,14 @@ def main ():
 
     difficulty = game_start(screen)
     board = SudokuGenerator(9, difficulty)
+    if difficulty == 30:
+        dif = "EASY"
+    elif difficulty == 40:
+        dif = "MEDIUM"
+    elif difficulty == 50:
+        dif = "HARD"
+    screen.fill(BG_COLOR_1)
+    during_game(screen, dif)
 
     #board.print_board()
     #For debugging ^
