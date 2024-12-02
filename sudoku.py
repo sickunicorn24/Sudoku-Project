@@ -115,7 +115,45 @@ def during_game(screen, difficulty):
                 elif exit_rectangle.collidepoint(event.pos):
                     sys.exit()
         pygame.display.update()
-    
+
+def win_screen(screen):
+    # Title/Button font init
+    title_font = pygame.font.Font(None, 100)
+    button_font = pygame.font.Font(None, 100)
+
+    # Background coloring
+    screen.fill(WIN_BG)
+
+    # Creating title text
+    title_surface = title_font.render("YOU WON!!!", 0, TEXT)
+    title_rectangle = title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 300))
+    screen.blit(title_surface, title_rectangle)
+
+    # Init Buttons
+    exit_text = button_font.render("EXIT", 0, TEXT)
+
+    # Init Easy/Medium/Hard Button Text Box Background
+    exit_surface = pygame.Surface((exit_text.get_size()[0] + 40, exit_text.get_size()[1] + 40))
+    exit_surface.fill(BG_COLOR_2)
+    exit_surface.blit(exit_text, (20, 20))
+
+    # Init Button Rectangle
+    exit_rectangle = exit_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+
+    # Draw Buttons
+    screen.blit(exit_surface, exit_rectangle)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_rectangle.collidepoint(event.pos):
+                    sys.exit()
+        pygame.display.update()
+
+def lose_screen(screen):
+    pass
+
 
 
 def main ():
@@ -136,6 +174,7 @@ def main ():
         dif = "HARD"
     screen.fill(BG_COLOR_1)
     during_game(screen, dif)
+    win_screen(screen)
 
     #board.print_board()
     #For debugging ^
