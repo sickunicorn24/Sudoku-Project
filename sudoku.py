@@ -4,6 +4,7 @@ from sys import displayhook
 import pygame, sys
 from pygame.display import update
 
+from board import Board
 from constants import *
 from sudoku_generator import *
 
@@ -262,7 +263,24 @@ def main ():
     pygame.display.set_caption("Prog 1 Sudoku")
     while True:
         difficulty = game_start(screen)
-        board = SudokuGenerator(9, difficulty)
+        board = Board(WIDTH, HEIGHT, screen, difficulty)
+        board.draw
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                clicked_cell = board.click(pos[0], pos[1])
+
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:  # Reset game
+                    board.reset_to_original()
+
+                if pygame.K_1 <= event.key <= pygame.K_9:
+                    board.place_number(event.key - pygame.K_0)
+
         if difficulty == 30:
             dif = "EASY"
         elif difficulty == 40:
