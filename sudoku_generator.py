@@ -18,7 +18,7 @@ class SudokuGenerator:
     def __init__(self, row_length, removed_cells):
         self.row_length = row_length
         self.removed_cells = removed_cells
-        self.board = [[0 for i in range(row_length)] for j in range(row_length)]
+        self.board = [[0 for row in range(row_length)] for col in range(row_length)]
         self.box_length = int(row_length ** 0.5)
 
     '''
