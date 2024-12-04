@@ -1,7 +1,7 @@
 import pygame
 import sys
-from board import Board  # Ensure Board is imported properly
-from constants import *  # Make sure constants like WIDTH, HEIGHT, BG_COLOR_1 are defined
+from board import Board
+from constants import *
 from sudoku_generator import SudokuGenerator
 
 
@@ -52,7 +52,7 @@ def during_game(screen, display_board, difficulty):
 
     # Init small message that displays the difficulty
     small_msg_surface = small_msg_font.render(difficulty, 0, TEXT)
-    small_msg_rectangle = small_msg_surface.get_rect(center=(WIDTH // 2, HEIGHT - 50))
+    small_msg_rectangle = small_msg_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
     screen.blit(small_msg_surface, small_msg_rectangle)
 
     # Text displays for the RESET/RESTART/EXIT buttons
@@ -76,18 +76,13 @@ def during_game(screen, display_board, difficulty):
     restart_rectangle = restart_surface.get_rect(center=(WIDTH // 2, HEIGHT - 150))
     exit_rectangle = exit_surface.get_rect(center=(WIDTH // 2 - 200, HEIGHT - 150))
 
-    # Track the selected square (initialize clicked_row and clicked_col)
-    clicked_row, clicked_col = -1, -1  # Start with an invalid selection
+    clicked_row, clicked_col = -1, -1
 
     while True:
-        screen.fill(BG_COLOR_1)  # Clear the screen on each loop iteration
-
-        # Draw the board and highlight the selected square
+        screen.fill(BG_COLOR_1)
         display_board.draw()
         if clicked_row != -1 and clicked_col != -1:
             display_board.select(clicked_row, clicked_col)
-
-        # Draw the reset/restart/exit buttons on top of the board
         screen.blit(reset_surface, reset_rectangle)
         screen.blit(restart_surface, restart_rectangle)
         screen.blit(exit_surface, exit_rectangle)
@@ -98,71 +93,47 @@ def during_game(screen, display_board, difficulty):
                 sys.exit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                # Handle button clicks (reset, restart, exit)
                 if reset_rectangle.collidepoint(event.pos):
-                    main()  # Restart the game (to reset)
+                    display_board.reset_to_original()
+                    display_board.draw()
                 elif restart_rectangle.collidepoint(event.pos):
-                    main()  # Restart the game
+                    main()
                 elif exit_rectangle.collidepoint(event.pos):
                     sys.exit()
 
                 # Handle board clicks (select the cell)
-                if event.pos[1] <= 630:  # If user clicks inside the board area
-                    clicked_row, clicked_col = display_board.click(event.pos[1], event.pos[0])
+                if 0 <= event.pos[0] < 540 and 0 <= event.pos[1] < 540:
+                    row, col = display_board.click(event.pos[0], event.pos[1])
+                    if display_board.cells[row][col].editable:
+                        clicked_row, clicked_col = row, col
+                    else:
+                        clicked_row, clicked_col = -1, -1
 
-            # Keyboard input (handling number placement)
             if event.type == pygame.KEYDOWN:
-                input_val = None
-                if event.key == pygame.K_RETURN:  # enter key
-                    input_val = 0
-                elif event.key == pygame.K_1:  # "1"
-                    input_val = 1
-                elif event.key == pygame.K_2:  # "2"
-                    input_val = 2
-                elif event.key == pygame.K_3:  # "3"
-                    input_val = 3
-                elif event.key == pygame.K_4:  # "4"
-                    input_val = 4
-                elif event.key == pygame.K_5:  # "5"
-                    input_val = 5
-                elif event.key == pygame.K_6:  # "6"
-                    input_val = 6
-                elif event.key == pygame.K_7:  # "7"
-                    input_val = 7
-                elif event.key == pygame.K_8:  # "8"
-                    input_val = 8
-                elif event.key == pygame.K_9:  # "9"
-                    input_val = 9
-                # Move selected red square with arrow keys
-                elif event.key == pygame.K_UP:  # Up arrow
-                    if clicked_row - 1 >= 0:
-                        clicked_row -= 1
-                elif event.key == pygame.K_DOWN:  # Down arrow
-                    if clicked_row + 1 <= 8:
-                        clicked_row += 1
-                elif event.key == pygame.K_LEFT:  # Left arrow
-                    if clicked_col - 1 >= 0:
-                        clicked_col -= 1
-                elif event.key == pygame.K_RIGHT:  # Right arrow
-                    if clicked_col + 1 <= 8:
-                        clicked_col += 1
+                if clicked_row != -1 and clicked_col != -1:
+                    if event.key in (pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5,
+                                     pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9):
+                        value = int(event.unicode)
+                        if display_board.cells[clicked_row][clicked_col].editable:
+                            display_board.cells[clicked_row][clicked_col].value = value
+                    elif event.key == pygame.K_UP:
+                        clicked_row = (clicked_row - 1) % 9
+                    elif event.key == pygame.K_DOWN:
+                        clicked_row = (clicked_row + 1) % 9
+                    elif event.key == pygame.K_LEFT:
+                        clicked_col = (clicked_col - 1) % 9
+                    elif event.key == pygame.K_RIGHT:
+                        clicked_col = (clicked_col + 1) % 9
 
-                try:
-                    # Sketch input val onto screen
-                    if 1 <= input_val <= 9:
-                        display_board.sketch(input_val)
+                    # Skip non-editable cells when navigating
+                    while not display_board.cells[clicked_row][clicked_col].editable:
+                        # Logic to prevent getting stuck on non-editable cells
+                        if event.key in (pygame.K_UP, pygame.K_DOWN):
+                            clicked_row = (clicked_row - 1) % 9 if event.key == pygame.K_UP else (clicked_row + 1) % 9
+                        if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
+                            clicked_col = (clicked_col - 1) % 9 if event.key == pygame.K_LEFT else (clicked_col + 1) % 9
 
-                    # Turn sketch value into actual val (place number)
-                    elif input_val == 0:
-                        if display_board.current.editable and display_board.current.value:
-                            display_board.current.value = 0
-                        else:
-                            display_board.place_number()
-
-                except:
-                    pass  # If a user enters a number not 1-9 it will do nothing
-
-        pygame.display.update()  # Update the display each frame
+        pygame.display.update()
 
 def draw_game_win(screen):
     win_font = pygame.font.Font(None, 120)
