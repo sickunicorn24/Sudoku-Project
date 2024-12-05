@@ -1,6 +1,5 @@
 import pygame
 from cell import Cell
-from constants import *
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
@@ -78,4 +77,19 @@ class Board:
         return None
 
     def check_board(self):
-        pass
+        for row in self.cells:
+            if not self._is_valid_group([cell.value for cell in row]):
+                return False
+        for col in range(9):
+            if not self._is_valid_group([self.cells[row][col].value for row in range(9)]):
+                return False
+        for i in range(0, 9, 3):
+            for j in range(0, 9, 3):
+                subgrid = [self.cells[x][y].value for x in range(i, i + 3) for y in range(j, j + 3)]
+                if not self._is_valid_group(subgrid):
+                    return False
+        return True
+
+    def _is_valid_group(self, values):
+        nums = [v for v in values if v != 0]
+        return len(nums) == len(set(nums))
