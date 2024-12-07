@@ -53,18 +53,13 @@ def game_start(screen):
 
     for text, x_pos in button_data:
         button_text = button_font.render(text, True, WHITE)
-
         button_surface = pygame.Surface((button_text.get_width() + 14, button_text.get_height() + 14))
-
         button_surface.fill(PURPLE)
         button_surface.blit(button_text, (10, 10))
         button_rectangle = button_surface.get_rect(center=(x_pos, HEIGHT // 2 + 300))
-
         buttons.append((button_surface, button_rectangle, text.lower()))
-
         button_ot_surface = pygame.Surface((button_text.get_width() + 21, button_text.get_height() + 21))
         button_ot_surface.fill(BLACK)
-
         screen.blit(button_ot_surface, button_rectangle)
         screen.blit(button_surface, button_rectangle)
 
@@ -121,9 +116,6 @@ def during_game(screen, display_board, difficulty):
     restart_ot_surface.fill(BLACK)
     exit_ot_surface = pygame.Surface((exit_text.get_size()[0] + 30, exit_text.get_size()[1] + 30))
     exit_ot_surface.fill(BLACK)
-
-
-
     clicked_row, clicked_col = -1, -1
 
     while True:
@@ -354,17 +346,11 @@ def draw_game_lose(screen):
                     sys.exit()
         pygame.display.update()
 
-
-
-
-
-
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Sudoku")
     difficulty = game_start(screen)
-
 
     removed_cells = {"easy": 30, "medium": 40, "hard": 50}
     sudoku = SudokuGenerator(9, removed_cells[difficulty])
