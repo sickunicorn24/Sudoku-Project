@@ -1,7 +1,7 @@
 #All of these values are subject to change
 
-WIDTH = 900
-HEIGHT = 1000
+WIDTH = 630
+HEIGHT = 750
 LIGHT_BLUE = (0, 47, 255) #Light Blue
 PURPLE = (200, 0, 255) #Purple
 GREEN = (125, 255, 125) # Green
@@ -12,3 +12,4 @@ WHITE = (255, 255, 255)
 EASY = 30
 MEDIUM = 40
 HARD = 50
+cell_size = 70

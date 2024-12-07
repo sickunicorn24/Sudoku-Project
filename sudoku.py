@@ -7,62 +7,64 @@ from sudoku_generator import SudokuGenerator
 
 def game_start(screen):
     #Initialize Font
-    start_title_font = pygame.font.Font(None, 130)
-    subtitle_font = pygame.font.Font(None, 100)
-    button_font = pygame.font.Font(None, 90)
+    start_title_font = pygame.font.Font(None, 85)
+    subtitle_font = pygame.font.Font(None, 65)
+    button_font = pygame.font.Font(None, 63)
 
     title_board = SudokuGenerator(9,35)
     title_board.fill_values()
     title_board.remove_cells()
     disp = title_board.get_board()
 
-    display_board = Board(100, 100, screen, 0)
+    display_board = Board(70, 70, screen, 0)
     for i in range(9):
         for j in range(9):
             display_board.cells[i][j].value = disp[i][j]
             if disp[i][j] != 0:
                 display_board.cells[i][j].editable = False
 
-
-
-
     #Main title text
     screen.fill(PINK)
     display_board.draw()
     main_title_surface = start_title_font.render("Welcome to Sudoku", True, PURPLE)
-    main_title_rectangle = main_title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 300))
+    main_title_rectangle = main_title_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 100))
     screen.blit(main_title_surface, main_title_rectangle)
 
     #Subtitle text
     subtitle_surface = subtitle_font.render("Select Game Mode", True, PURPLE)
-    subtitle_rectangle = subtitle_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
+    subtitle_rectangle = subtitle_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 200))
     screen.blit(subtitle_surface, subtitle_rectangle)
 
     #Outline setup
     main_title_outline = start_title_font.render("Welcome to Sudoku", 0, WHITE)
     for i in range(-4, 5):
         for j in range(-4, 5):
-            screen.blit(main_title_outline, main_title_surface.get_rect(center=(WIDTH // 2 + i, HEIGHT // 2 - 300 + j)))
+            screen.blit(main_title_outline, main_title_surface.get_rect(center=(WIDTH // 2 + i, HEIGHT // 2 - 100 + j)))
     screen.blit(main_title_surface, main_title_rectangle)
     subtitle_outline = subtitle_font.render("Select Game Mode", 0, WHITE)
     for i in range(-4, 5):
         for j in range(-4, 5):
-            screen.blit(subtitle_outline, subtitle_surface.get_rect(center=(WIDTH // 2 + i, HEIGHT // 2 - 50 + j)))
+            screen.blit(subtitle_outline, subtitle_surface.get_rect(center=(WIDTH // 2 + i, HEIGHT // 2 + 200 + j)))
     screen.blit(subtitle_surface, subtitle_rectangle)
 
     #Main menu buttons
-    button_data = [("Easy", WIDTH // 2 + 270), ("Medium", WIDTH // 2), ("Hard", WIDTH // 2 - 270)]
+    button_data = [("Easy", WIDTH // 2+200), ("Medium", WIDTH // 2), ("Hard", WIDTH // 2 - 200)]
     buttons = []
 
     for text, x_pos in button_data:
         button_text = button_font.render(text, True, WHITE)
-        button_surface = pygame.Surface((button_text.get_width() + 20, button_text.get_height() + 20))
+
+        button_surface = pygame.Surface((button_text.get_width() + 14, button_text.get_height() + 14))
+
         button_surface.fill(PURPLE)
         button_surface.blit(button_text, (10, 10))
-        button_rectangle = button_surface.get_rect(center=(x_pos, HEIGHT // 2 + 150))
+        button_rectangle = button_surface.get_rect(center=(x_pos, HEIGHT // 2 + 300))
+
         buttons.append((button_surface, button_rectangle, text.lower()))
-        button_ot_surface = pygame.Surface((button_text.get_width() + 30, button_text.get_height() + 30))
+
+        button_ot_surface = pygame.Surface((button_text.get_width() + 21, button_text.get_height() + 21))
         button_ot_surface.fill(BLACK)
+
         screen.blit(button_ot_surface, button_rectangle)
         screen.blit(button_surface, button_rectangle)
 
