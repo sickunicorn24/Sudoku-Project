@@ -1,4 +1,6 @@
 import pygame
+from pygame.examples.moveit import WIDTH
+
 from cell import Cell
 
 class Board:
@@ -13,9 +15,9 @@ class Board:
 
     def draw(self):
         for row in range(10):
-            thickness = 2 if row % 3 == 0 else 1
-            pygame.draw.line(self.screen, (0, 0, 0), (0, row * 60), (540, row * 60), thickness)
-            pygame.draw.line(self.screen, (0, 0, 0), (row * 60, 0), (row * 60, 540), thickness)
+            thickness = 3 if row % 3 == 0 else 1
+            pygame.draw.line(self.screen, (0, 0, 0), (0, row * 100), (900, row * 100), thickness)
+            pygame.draw.line(self.screen, (0, 0, 0), (row * 100, 0), (row * 100, 900), thickness)
         for row in self.cells:
             for cell in row:
                 cell.draw()
@@ -32,8 +34,8 @@ class Board:
 
     def click(self, x, y):
         if x < self.width and y < self.height:
-            row = y // 60
-            col = x // 60
+            row = y // 100
+            col = x // 100
             self.select(row, col)
             return row, col
         return None
