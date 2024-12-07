@@ -1,5 +1,5 @@
 import pygame
-from constants import TEXT
+from constants import *
 
 class Cell:
     def __init__(self, value, row, col, screen):
@@ -20,16 +20,16 @@ class Cell:
     def draw(self):
         font_num = pygame.font.Font(None, 80)
         if self.value != 0:
-            num_surface = font_num.render(str(self.value), True, TEXT)
+            num_surface = font_num.render(str(self.value), True, BLACK)
             num_rectangle = num_surface.get_rect(
-                center=(60 * self.col + 30, 60 * self.row + 30))
+                center=(100 * self.col + 50, 100 * self.row + 50))
             self.screen.blit(num_surface, num_rectangle)
         if self.selected:
-            red_square = pygame.Rect(self.col * 60, self.row * 60, 60, 60)
+            red_square = pygame.Rect(self.col * 100, self.row * 100, 100, 100)
             pygame.draw.rect(self.screen, (255, 0, 0), red_square, 3)  # Red outline with 3 px thickness
         if self.sketched_val is not None:
             font_sketch = pygame.font.Font(None, 40)
-            sketch_surface = font_sketch.render(str(self.sketched_val), True, TEXT)
+            sketch_surface = font_sketch.render(str(self.sketched_val), True, BLACK)
             sketch_rectangle = sketch_surface.get_rect(
-                center=(60 * self.col + 30, 60 * self.row + 30))
+                center=(100 * self.col + 50, 100 * self.row + 50))
             self.screen.blit(sketch_surface, sketch_rectangle)
