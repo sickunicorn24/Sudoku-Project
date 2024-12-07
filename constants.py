@@ -1,14 +1,16 @@
 #All of these values are subject to change
 
-WIDTH = 900
+WIDTH = 850
 HEIGHT = 1000
-LIGHT_BLUE = (0, 47, 255) #Light Blue
-PURPLE = (200, 0, 255) #Purple
-GREEN = (125, 255, 125) # Green
-RED = (250, 52, 52) # Red
-BLACK = (0, 0, 0) #Black
-PINK = (255, 10, 200) #Pink
-WHITE = (255, 255, 255)
+BG_COLOR_1 = (125, 248, 255) #Light Blue
+BG_COLOR_2 = (150, 10, 255) #Purple *IF NECCESSARY*
+WIN_BG = (125, 255, 125) # Green
+LOSE_BG = (250, 52, 52) # Red
+TEXT = (0, 0, 0) #Black
+TITLE_TEXT = (255, 10, 200) #Pink
+BUTTON_COLOR = (255, 10, 200) #Pink
+BUTTON_COLOR_2 = (255, 255, 255)
+BUTTON_TEXT = (125, 248, 255) #Light Blue
 EASY = 30
 MEDIUM = 40
 HARD = 50
